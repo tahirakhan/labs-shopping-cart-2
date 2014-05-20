@@ -2,11 +2,15 @@ package com.shapestone.labs;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class ShoppingCartTest {
     private ShoppingCartImpl shoppingCart;
@@ -14,7 +18,11 @@ public class ShoppingCartTest {
     @Test
     public void testOfAddingToShoppingCartShouldContainOneItem() throws Exception {
         // given
-        ShoppingCartApi api = new ShoppingCartApi();
+        List<ProductItem> productItemList = new ArrayList<ProductItem>();
+        productItemList.add(new ProductItem("stapler", 1, 5.99D));
+        ShoppingCartApi api = mock(ShoppingCartApi.class);
+        when(api.getAllItems()).thenReturn(productItemList);
+
         shoppingCart = new ShoppingCartImpl();
         shoppingCart.setShoppingCartApi(api);
         ProductItem item = new ProductItem("stapler", 1, 5.99D);
@@ -32,7 +40,10 @@ public class ShoppingCartTest {
     @Test
     public void testOfAddingProductItemWithACountOfTheeShouldYieldTheCorrectTotal() throws Exception {
         // given
-        ShoppingCartApi api = new ShoppingCartApi();
+        List<ProductItem> productItemList = new ArrayList<ProductItem>();
+        productItemList.add(new ProductItem("stapler", 3, 5.99D));
+        ShoppingCartApi api = mock(ShoppingCartApi.class);
+        when(api.getAllItems()).thenReturn(productItemList);
         shoppingCart = new ShoppingCartImpl();
         shoppingCart.setShoppingCartApi(api);
         ProductItem item = new ProductItem("stapler", 3, 5.99D);
@@ -50,7 +61,13 @@ public class ShoppingCartTest {
     @Test
     public void testOfAddingMultipleProductItemsWithDifferentCountsShouldYieldTheCorrectTotalAndCounts() throws Exception {
         // given
-        ShoppingCartApi api = new ShoppingCartApi();
+
+        List<ProductItem> productItemList = new ArrayList<ProductItem>();
+        productItemList.add(new ProductItem("stapler", 3, 5.99D));
+        productItemList.add(new ProductItem("pencils", 10, 0.49D));
+        ShoppingCartApi api = mock(ShoppingCartApi.class);
+        when(api.getAllItems()).thenReturn(productItemList);
+
         shoppingCart = new ShoppingCartImpl();
         shoppingCart.setShoppingCartApi(api);
         ProductItem item1 = new ProductItem("stapler", 3, 5.99D);
@@ -70,7 +87,12 @@ public class ShoppingCartTest {
     @Test
     public void testOfAddingMultipleProductItemsAndRemovingOneItemShouldYieldTheCorrectTotalAndCounts() throws Exception {
         // given
-        ShoppingCartApi api = new ShoppingCartApi();
+        List<ProductItem> productItemList = new ArrayList<ProductItem>();
+        productItemList.add(new ProductItem("pencils", 10, 0.49D));
+        ShoppingCartApi api = mock(ShoppingCartApi.class);
+        when(api.getAllItems()).thenReturn(productItemList);
+
+
         shoppingCart = new ShoppingCartImpl();
         shoppingCart.setShoppingCartApi(api);
         ProductItem item1 = new ProductItem("stapler", 3, 5.99D);
@@ -91,7 +113,11 @@ public class ShoppingCartTest {
     @Test
     public void testOfAddingMultipleProductItemsAndClearingTheShoppingCartShouldYieldTheCorrectTotalAndCounts() throws Exception {
         // given
-        ShoppingCartApi api = new ShoppingCartApi();
+        List<ProductItem> productItemList = new ArrayList<ProductItem>();
+        ShoppingCartApi api = mock(ShoppingCartApi.class);
+        when(api.getAllItems()).thenReturn(productItemList);
+
+
         shoppingCart = new ShoppingCartImpl();
         shoppingCart.setShoppingCartApi(api);
         ProductItem item1 = new ProductItem("stapler", 3, 5.99D);
